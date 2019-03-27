@@ -11,12 +11,13 @@ app.get('/', (req, res) => {
 
 app.use(express.static(process.cwd() + '/public'));
 
+// totalUsers & totalList not currently in use
 var totalUsers = 0;
 var currentUsers = 0;
 var currentList = [];
 var totalList = [];
 io.on('connection', function(socket){
-  var addedUser = false; // not sure if needed
+  var addedUser = false; // if the main page is refreshed before a name is picked, --currentUsers wont trigger
   var userColor;
   var userName;
   var userId = socket.id;
@@ -25,7 +26,6 @@ io.on('connection', function(socket){
     addedUser = true;
     userColor = color;
     userName = name;
-    //userId = socket.id;
     socket.broadcast.emit('new user', { name: name, color: color });
     io.emit('count', { count: currentUsers, total: totalUsers });
     io.emit('users', { users: currentList });
@@ -38,7 +38,6 @@ io.on('connection', function(socket){
   });
   
   socket.on('new user', function(name, color){
-    /*userId = socket.id;*/
     ++currentUsers;
     ++totalUsers;
     totalList.push({ name: name, color: color, id: userId });
@@ -47,7 +46,6 @@ io.on('connection', function(socket){
   });
   
   socket.on('returning user', function(name, color){
-    /*userId = socket.id;*/
     var index = currentList.findIndex(i => i.name === name);
     if (index === -1) { // prevents user from manipulating data with 2+ tabs
       ++currentUsers;
@@ -68,7 +66,7 @@ io.on('connection', function(socket){
 	socket.broadcast.emit('not typing');
   });
   
-  socket.on('private', function(msg, name){ // from: userName, to: name
+  socket.on('private', function(msg, name){
     var id = currentList[currentList.findIndex(i => i.name === name)].id;
     io.to(id).emit('private', { name: userName, color: userColor, msg: msg });
   });

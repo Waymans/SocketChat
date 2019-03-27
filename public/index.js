@@ -1,10 +1,7 @@
 /* 
 things to change/update:
-  1. responsive topnav for #users
-  2. add auto scroll for new messages. dont scroll if user isnt on bottom of feed - notification
-  3. change location of 'user is typing...' snd 'user joined the chat.' for mobile (overlapping text currently)
-  4. add a chatbot
-  5. add channels
+  1. add a chatbot
+  2. add channels
 */
 $(function () {
   var socket = io();
@@ -13,20 +10,20 @@ $(function () {
   
   var cookieUser = getCookie('username');
   var cookieColor = getCookie('color');
-  /*if (cookieUser !== '') {
+  if (cookieUser !== '') {
     socket.emit('returning user', cookieUser, cookieColor);
     $('#nickname').hide();
     $('#contain').show();
     $('#m').focus();
   } else {
     $('#n').focus(); 
-  }*/
-	  
+  }
+  
   $('#nickname').submit(function(e){
     e.preventDefault(); 
     var name = $('#n').val().trim();
     socket.emit('check', name, colors[rand]);
-    /*setCookie('username', name, 1);
+    setCookie('username', name, 1);
     setCookie('color', colors[rand], 1);
     socket.emit('new user', name, colors[rand]);
     cookieColor = getCookie('color');
@@ -34,7 +31,7 @@ $(function () {
     $('#n').val('');
     $('#nickname').fadeOut(1000);
     $('#contain').fadeIn(1000);
-    $('#m').focus();*/
+    $('#m').focus();
     return false;
   });
   $('#input').submit(function(e){
@@ -59,7 +56,7 @@ $(function () {
   
   socket.on('check', function(data){
     if (data.res) {
-      setCookie('username', data.name, 1); // checkCookie
+      setCookie('username', data.name, 1);
       setCookie('color', data.color, 1);
       socket.emit('new user', data.name, data.color);
       cookieColor = getCookie('color');
@@ -73,14 +70,14 @@ $(function () {
     }
   })  
   socket.on('new user', function(data){
-    var res = '<span><strong style="color: '+data.color+'">'+data.name+'</strong> has joined the chat.</span>';
+    var res = '<span><strong style="color: '+data.color+'">'+data.name+'</strong> joined.</span>';
     $('#displayUserBottom').html(res);
     $('#displayBottom').fadeIn(500).delay(2000).fadeOut(500);
   });
   socket.on('count', function(data){
     $('#num').text(data.count)
   });
-  socket.on('users', function(data){ // &#8801; for mobile
+  socket.on('users', function(data){
     var arr = [];
     data.users.forEach(x => {
       var res;
@@ -109,7 +106,7 @@ $(function () {
   });
       
   socket.on('disconnect', function(data){
-    var res = '<span><strong style="color: '+data.color+'">'+data.name+'</strong> has left the chat.</span>';
+    var res = '<span><strong style="color: '+data.color+'">'+data.name+'</strong> left.</span>';
     $('#displayUserBottom').html(res);
     $('#displayBottom').fadeIn(500).delay(2000).fadeOut(500);
     $('#num').text(data.count)
@@ -120,7 +117,7 @@ $(function () {
       typingUser();
     } else {
       typing = false;
-      socket.emit('is not typing');
+      socket.emit('not typing');
     }
   });
    
@@ -178,7 +175,7 @@ $(function () {
     d.setTime(d.getTime() + (exp*60*60*1000)); // exp * 1 day(24*60*60*1000), currently in hours
     var expires = "expires=" + d.toGMTString();
     document.cookie = name + "=" + val + ";" + expires + ";path=/";
-  }
+  };
   function getCookie(name) {
     var name = name + "=";
     var decodedC = decodeURIComponent(document.cookie);
@@ -187,13 +184,13 @@ $(function () {
       var c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
-      }
+      };
       if (c.indexOf(name) == 0) {
         return c.substring(name.length, c.length);
-      }
-    }
+      };
+    };
     return "";
-  }
+  };
   
   /* private message modal */
   function private(e) {
@@ -202,11 +199,11 @@ $(function () {
     $('#name').text(name);
     $('#myModal').css('display', 'block');
     $('#pm').focus();
-  }
+  };
   window.onclick = function(e) { 
     if (e.target === $('#myModal')[0]) {
       $('#myModal').css('display', 'none');
-    }
+    };
   };
   
   /* profile */
@@ -214,7 +211,7 @@ $(function () {
     e.preventDefault();
     var name = $(this).parent().prev().prev().prev().html();
     alert('Coming Soon')
-  }
+  };
   
   /* #messages height */
   function height() {
@@ -223,24 +220,35 @@ $(function () {
     var bot = $('#input').outerHeight();
     var total = doc - (top + bot) - 25;
     $('#messages').css({'min-height': total, 'max-height': total, 'overflow-y': 'scroll', 'border-bottom': '2px solid black'});
-  }
+  };
   
   /* scrolling */
   function scroll(val) {
     var mess = $('#messages'); // single message display is ~77px tall;
+    var box = mess.height(); // height of container
+    var total = mess.prop('scrollHeight'); // height of total content
+    var hidden = total - box; // height of hidden content
     if (val) { 
-      mess.animate({ scrollTop: reloc }, 1000); 
+      mess.animate({ scrollTop: hidden }, 1000); 
       $('#below').fadeOut(500);
     } else {
-      var box = mess.height();
-      var total = mess.prop('scrollHeight');
       var locat = mess.scrollTop();
-      var reloc = total - box;
-      reloc - locat > 80 ? messageBelow(): mess.animate({ scrollTop: reloc }, 1000);
-    } 
-  }
+      hidden - locat > 77 ? messageBelow(): mess.animate({ scrollTop: hidden }, 500);
+    };
+  };
   
   function messageBelow() {
-    $('#below').html('&darr; &#09; new messages below &#09; &darr;').click(scroll(true)).fadeIn(500);
-  }
+    $('#below').click(scroll).html('&darr; &#09;&#09; new messages below &#09;&#09; &darr;').hover(function() {
+  $(this).css('cursor','default')}).fadeIn(500);
+    $('#messages').scroll(function(){
+      $(this).prop('scrollHeight') - $(this).height() - $(this).scrollTop() < 77 ? $('#below').fadeOut(500): null;
+    });
+  };
+  
+  /* mobile nav */
+  var border = true;
+  $('.nav').click(function(){
+    border ? $('#displayTop').css('border-bottom','none'): $('#displayTop').css('border-bottom','2px solid gray')
+    $('#displayOnline').toggle(()=>{ border = !border });
+  });
 });
