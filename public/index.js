@@ -23,15 +23,6 @@ $(function () {
     e.preventDefault(); 
     var name = $('#n').val().trim();
     socket.emit('check', name, colors[rand]);
-    setCookie('username', name, 1);
-    setCookie('color', colors[rand], 1);
-    socket.emit('new user', name, colors[rand]);
-    cookieColor = getCookie('color');
-    cookieUser = getCookie('username');
-    $('#n').val('');
-    $('#nickname').fadeOut(1000);
-    $('#contain').fadeIn(1000);
-    $('#m').focus();
     return false;
   });
   $('#input').submit(function(e){
@@ -139,7 +130,7 @@ $(function () {
       timeout = setTimeout(timeoutFunction, 2000);
     };
   };
-  function maker(color,line,name,date,message,pm) { // could combine these. 8divs & 1span is a lot for one message
+  function maker(color,line,name,date,message,pm) {
     var cont = $('<div>'),
         row1 = $('<div>').attr('class','row1'),
         col1 = $('<div>').attr('class','column1 name').css({'color': color,'text-decoration-line': line}).text(name),
