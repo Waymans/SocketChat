@@ -239,7 +239,7 @@ $(function () {
   /* mobile nav */
   var border = true;
   $('.nav').click(function(){
-    border ? $('#displayTop').css('border-bottom','none'): $('#displayTop').css('border-bottom','2px solid gray')
+    border ? $('#displayTop').css('border-bottom','none'): $('#displayTop').css('border-bottom','2px solid gray');
     $('#displayOnline').toggle(()=>{ border = !border });
   });
 });
