@@ -84,9 +84,7 @@ strong:hover { cursor: pointer; }
   margin: 0; padding: 0; }
 .float-right { float: right; }
 
-@media screen and (max-width: 400px) {
-  #n { font-size: 1rem; }}
-::placeholder { opacity: .5; }
+::placeholder { opacity: .8; }
 
 /* Messages display */
 #info:hover { cursor: pointer; }
@@ -125,6 +123,7 @@ strong:hover { cursor: pointer; }
   .name { width: 50%; }
   .column3 { width: 85%; }}
 @media screen and (max-width: 400px) {
+  #n { font-size: 1rem; }
   .nav { display: block; }
   #displayTop { border-bottom: 2px solid gray; }
   .date, .blank1, .blank2, #displayOnline { display: none; }
