@@ -66,16 +66,7 @@ html, body { height: 100%; }
   color: white; 
   opacity: .75; }
 #n:focus { opacity: 1; }
-#nickname button { 
-  margin-top: 1rem; 
-  width: 50%; 
-  background: rgb(130, 224, 255); 
-  border: none; 
-  padding: 1rem 2rem; 
-  opacity: .75 }
-#nickname button:hover { 
-  opacity: 1; 
-  cursor: pointer; }
+
 strong:hover { cursor: pointer; }
 
 
@@ -123,6 +114,7 @@ strong:hover { cursor: pointer; }
   .name { width: 50%; }
   .column3 { width: 85%; }}
 @media screen and (max-width: 400px) {
+  input[type="text"] { font-size: 16px; }
   #n { font-size: 1rem; }
   .nav { display: block; }
   #displayTop { border-bottom: 2px solid gray; }
@@ -153,3 +145,13 @@ strong:hover { cursor: pointer; }
   padding: 20px;
   border: 1px solid #888;
   width: 80%;}
+.right {
+  float: right; }
+.right:hover {
+  cursor: pointer; }
+.btn { display: block; }
+#privateMsg::after {
+  content: '';
+  display: table;
+  clear: both;
+}

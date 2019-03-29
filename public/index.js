@@ -38,8 +38,8 @@ $(function () {
   $('#privateMsg').submit(function(e){
     e.preventDefault();
     var msg = $('#pm').val();
-    var name = $('#name').html();
-    socket.emit('private', msg, name);
+    var name = $('#name').html().trim();
+    socket.emit('private message', msg, name);
     $('#pm').val('');
     $('#result').text('Message Sent').fadeIn(500).delay(2000).fadeOut(500);
     return false;
@@ -53,7 +53,7 @@ $(function () {
       cookieColor = getCookie('color');
       cookieUser = getCookie('username');
       $('#n').val('');
-      $('#nickname').fadeOut(1000);
+      $('#nickname').fadeOut(0);
       $('#contain').fadeIn(1000);
       $('#m').focus();
     } else {
@@ -72,7 +72,7 @@ $(function () {
     var arr = [];
     data.users.forEach(x => {
       var res;
-      arr.length > 0 ? res = $('<span>,<strong style="color: '+x.color+'"> '+x.name+'</strong></span>').click(private): res = $('<span><strong style="color: '+x.color+'"> '+x.name+'</strong></span>').click(private);
+      arr.length > 0 ? res = $('<span>,<strong style="color: '+x.color+'"> '+x.name+'</strong></span>').click(privateM): res = $('<span><strong style="color: '+x.color+'"> '+x.name+'</strong></span>').click(privateM);
       arr.push(res);
     })
     $('#users').html(arr);
@@ -91,7 +91,7 @@ $(function () {
     scroll(false);
   });
   
-  socket.on('private', function(data){
+  socket.on('private message', function(data){
     maker(data.color,'none',data.name,new Date(),data.msg,true);
     scroll(false);
   });
@@ -184,7 +184,7 @@ $(function () {
   };
   
   /* private message modal */
-  function private(e) {
+  function privateM(e) {
     e.preventDefault();
     var name = $(this).children().html();
     $('#name').text(name);
@@ -196,6 +196,7 @@ $(function () {
       $('#myModal').css('display', 'none');
     };
   };
+  $('.right').click(() => { $('#myModal').css('display', 'none'); });
   
   /* profile */
   function profile(e) {
@@ -216,12 +217,14 @@ $(function () {
   
   /* #messages height */
   function height() {
-    var doc = $(document).height();
-    var top = $('#displayTop').outerHeight() + $('#displayOnline').outerHeight();
-    var bot = $('#input').outerHeight();
-    var total = doc - (top + bot) - 25;
-    $(document).width() < 400 ? border ? total = doc - (top + bot) - 9: total = doc - (top + bot) - 29: null;
-    $('#messages').css({'min-height': total, 'max-height': total, 'overflow-y': 'scroll', 'border-bottom': '2px solid black'});
+    if ($('#messages').children().length > 1) {
+      var doc = $(document).height();
+      var top = $('#displayTop').outerHeight() + $('#displayOnline').outerHeight();
+      var bot = $('#input').outerHeight();
+      var total = doc - (top + bot) - 25;
+      $(document).width() < 400 ? border ? total = doc - (top + bot) - 9: total = doc - (top + bot) - 29: null;
+      $('#messages').css({'min-height': total, 'max-height': total, 'overflow-y': 'scroll', 'border-bottom': '2px solid black'});
+    }
   };
   
   /* scrolling */

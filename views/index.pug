@@ -14,6 +14,9 @@ form#nickname(action='')
 #contain
   #myModal.modal
     .modal-content
+      button.right Close
+      br
+      br
       p Send a private message to
         |
         |
@@ -21,7 +24,7 @@ form#nickname(action='')
         | !
       form#privateMsg(action='')
         input#pm(type='text', autocomplete='off', max='100')
-        button Send
+        button.btn Send
       #result
   #displayTop
     span#num
