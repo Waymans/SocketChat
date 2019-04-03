@@ -27,7 +27,7 @@ $(function () {
   });
   $('#input').submit(function(e){
     e.preventDefault();
-    var msg = $('#m').val();
+    var msg = $('#m').val().trim();
     if (msg === '') {return false;};
     socket.emit('chat message', msg, cookieColor);
     $('#m').val('');
@@ -37,7 +37,7 @@ $(function () {
   });
   $('#privateMsg').submit(function(e){
     e.preventDefault();
-    var msg = $('#pm').val();
+    var msg = $('#pm').val().trim();
     var name = $('#name').html().trim();
     socket.emit('private message', msg, name);
     $('#pm').val('');
