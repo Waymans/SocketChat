@@ -7,6 +7,9 @@ $(function () {
   var socket = io();
   var colors = [ '#ff3e30','#ff6f5f','#ff6aaf','#9f3985','#2ecd40','#ff650f','#0074e9','#39cccd','#ff9a0c' ];
   var rand = Math.floor((Math.random() * colors.length) + 1); 
+  var agent = navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile|WPDesktop/i);
+  
+  agent ? $('#input').css('padding', 2): null;
   
   var cookieUser = getCookie('username');
   var cookieColor = getCookie('color');
@@ -222,7 +225,7 @@ $(function () {
       var top = $('#displayTop').outerHeight() + $('#displayOnline').outerHeight();
       var bot = $('#input').outerHeight();
       var total = doc - (top + bot) - 25;
-      $(document).width() < 400 ? border ? total = doc - (top + bot) - 9: total = doc - (top + bot) - 29: null;
+      $(document).width() < 400 ? border ? total = doc - (top + bot) - 5: total = doc - (top + bot) - 25: null;
       $('#messages').css({'min-height': total, 'max-height': total, 'overflow-y': 'scroll', 'border-bottom': '2px solid black'});
     }
   };
@@ -243,10 +246,15 @@ $(function () {
   };
   
   function messageBelow() {
-    $('#below').click(scroll).html('&darr; &#09;&#09; new messages below &#09;&#09; &darr;').hover(function() {
+    $('#below').css('width', detectMobile ).click(scroll).html('&darr; &#09;&#09; new messages below &#09;&#09; &darr;').hover(function() {
   $(this).css('cursor','default')}).fadeIn(500);
     $('#messages').scroll(function(){
       $(this).prop('scrollHeight') - $(this).height() - $(this).scrollTop() < 77 ? $('#below').fadeOut(500): null;
     });
+  };
+  
+  function detectMobile() {
+    if (agent) { return '100%' } 
+    else { return 'calc(100% - 17px)' }
   };
 });
