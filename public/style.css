@@ -5,6 +5,9 @@
   font-family: 'Montserrat', sans-serif; 
   font-size: 14px; }
 html, body { height: 100%; }
+body{
+  background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("https://picjumbo.com/wp-content/uploads/red-and-blue-ink-2210x2917.jpg");
+}
 #displayBottom, #below { 
   display: none;
   position: fixed; 
@@ -53,18 +56,23 @@ html, body { height: 100%; }
   flex-direction: column; 
   height: 100%; 
   width: 100%; 
-  background: black; }
+  background: url(https://picjumbo.com/wp-content/uploads/fire-abstract-2210x1473.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
 #n { 
   border: none; 
   padding: 10px; 
   width: 50%; 
   border-bottom: 3px solid white; 
-  background: black; 
+  background: transparent; 
   text-align: center; 
   font-size: 2rem; 
   color: white; 
-  opacity: .75; }
+  opacity: .85; }
 #n:focus { opacity: 1; }
+::placeholder { opacity: 1; }
 
 strong:hover { cursor: pointer; }
 
