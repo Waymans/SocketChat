@@ -3,6 +3,6 @@
 
 Includes private messaging (can do so by clicking their name at the top of the app). 
 
-<img src="./vid/socket.gif" width="700" height="400">
+<img src="./vid/socket.gif" width="850" height="550">
 
 Similar to [this](https://glaze-kitchen.glitch.me/) project where I used MongoDB and GitHub OAuth.
