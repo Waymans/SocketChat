@@ -1,8 +1,33 @@
-# Instant Chat messaging using [Socket.io](https://socket.io/)
-## No databases or OAuth used for this but instead cookies for unique names.
+# Socketeer
 
-Includes private messaging (can do so by clicking their name at the top of the app). 
+## What is it?
+
+Socketeer is an instant messaging app. To start using the app, users must log in using GitHub.
+Users will see messages to which they can respond to and see replies in real time. Messages are
+stored via cloud(mLab) using MongoDB.
 
 <img src="./vid/socket.gif" width="850" height="550">
 
-Similar to [this](https://glaze-kitchen.glitch.me/) project where I used MongoDB and GitHub OAuth.
+Private messaging is enabled, along with 'user is typing' and 'new messages' functionality. 
+
+* [View the Deployed Site](https://glaze-kitchen.glitch.me/)
+
+And check out its' relatives that use:
+* [Cookie Storage](https://wise-ticket.glitch.me/)
+* [PostgreSQL](https://inexpensive-beast-1.glitch.me/)
+
+## Stack
+Socketeer is built on the front-end with:
+* HTML, CSS
+* jQuery
+* Pug
+
+The back-end is built on:
+* Node
+* Express
+* MongoDB
+* Passport
+* Socket.io
+
+## Authors
+Waylan Hedine

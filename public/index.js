@@ -16,6 +16,7 @@ $(function () {
   if (cookieUser !== '') {
     socket.emit('returning user', cookieUser, cookieColor);
     $('#nickname').hide();
+    $('#cookie').hide();
     $('#contain').show();
     $('#m').focus();
   } else {
@@ -56,6 +57,7 @@ $(function () {
       cookieColor = getCookie('color');
       cookieUser = getCookie('username');
       $('#n').val('');
+      $('#cookie').hide();
       $('#nickname').fadeOut(0);
       $('#contain').fadeIn(1000);
       $('#m').focus();
