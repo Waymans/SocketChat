@@ -1,13 +1,8 @@
 * { 
-  margin: 0; 
-  padding: 0; 
   box-sizing: border-box; 
   font-family: 'Montserrat', sans-serif; 
   font-size: 14px; }
-html, body { height: 100%; }
-body{
-  background: linear-gradient(rgba(255,255,255,.8), rgba(255,255,255,.8)), url("https://picjumbo.com/wp-content/uploads/red-and-blue-ink-2210x2917.jpg");
-}
+html, body { margin: 0;height: 100%; }
 #displayBottom, #below { 
   display: none;
   position: fixed; 
@@ -85,7 +80,6 @@ body{
 
 strong:hover { cursor: pointer; }
 
-
 #messages { 
   list-style-type: none; 
   margin: 0; padding: 0; }
@@ -95,48 +89,15 @@ strong:hover { cursor: pointer; }
 
 /* Messages display */
 #info:hover { cursor: pointer; }
-.column1 {
-  float: left;
-  width: 25%;
-  padding: 10px; }
-.row1:after {
-  content: "";
-  display: table;
-  clear: both; }
-.column2 {
-  float: left;
-  width: 25%;
-  padding: 10px; }
-.column3 {
-  float: left;
-  width: 75%;
-  padding: 10px;
-  background: #eee; }
-.row2 {
-  border-bottom: 1px solid #ccc; }
-.row2:after {
-  content: "";
-  display: table;
-  clear: both; }
-.name { font-weight: bold; }
-.other {
-  font-weight: bold;
-  text-align: right; }
 .date { color: #888; }
 
-@media screen and (max-width: 750px) {
-  .blank1 { display: none; }
-  .blank2 { width: 15% }
-  .name { width: 50%; }
-  .column3 { width: 85%; }}
 @media screen and (max-width: 400px) {
   input[type="text"] { font-size: 16px; }
   #n { font-size: 1rem; }
   .nav { display: block; }
   #displayTop { border-bottom: 2px solid gray; }
-  .date, .blank1, .blank2, #displayOnline { display: none; }
-  .name { width: 75%; }
-  .column3 { width: 100%; }}
+  .date, #displayOnline { display: none; }
+  .name { width: 75%; }}
 
 /* info transition */
 .myBtn:hover { cursor: pointer;}
@@ -169,5 +130,47 @@ strong:hover { cursor: pointer; }
 #privateMsg::after {
   content: '';
   display: table;
-  clear: both;
-}
+  clear: both;}
+
+/* messages */
+.message {
+  border: 2px solid #dedede;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;}
+.img {
+  min-width: 60px;
+  max-width: 60px;}
+.col1 {
+  float: left;
+  width: 80px;
+  padding: 10px;}
+.col2 {
+  float: left;
+  width: calc(100% - 80px);
+  padding: 10px;}
+.text-right {
+  text-align: right;}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;}
+.message button {
+  border: none;
+  width: 20px;
+  border-radius: 30px;
+  transition: all .3s;
+  background: #eee;
+  font-weight:bold;}
+.message button:hover {
+  cursor: pointer;
+  background: #aaa;}
+@media screen and (max-width: 400px) {
+  .col1 { display: none; }
+  .col2 {
+    width: 100%;}}
+.pm {
+  background: rgb(250, 250, 255);}
+.self {
+  background: rgb(250, 255, 250);}

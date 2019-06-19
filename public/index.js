@@ -5,8 +5,8 @@ things to change/update:
 */
 $(function () {
   var socket = io();
-  var colors = [ '#ff3e30','#ff6f5f','#ff6aaf','#9f3985','#2ecd40','#ff650f','#0074e9','#39cccd','#ff9a0c' ];
-  var rand = Math.floor((Math.random() * colors.length) + 1); 
+  var colors = [ '#ff3e30','#ff6aaf','#9f3985','#2ecd40','#ff650f','#0074e9','#39cccd','#ff9a0c' ];
+  var rand = Math.floor((Math.random() * colors.length)); 
   var agent = navigator.userAgent.match(/Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile|WPDesktop/i);
   
   agent ? $('#input').css('padding', 2): null;
@@ -35,7 +35,7 @@ $(function () {
     if (msg === '') {return false;};
     socket.emit('chat message', msg, cookieColor);
     $('#m').val('');
-    maker('red','underline','YOU',new Date(),msg,false);
+    maker('red','underline','YOU',new Date(),msg,false,rand);
     scroll(false);
     return false;
   });
@@ -92,12 +92,12 @@ $(function () {
   });    
      
   socket.on('chat message', function(data){
-    maker(data.color,'none',data.name,new Date(),data.msg,false);
+    maker(data.color,'none',data.name,new Date(),data.msg,false,data.num);
     scroll(false);
   });
   
   socket.on('private message', function(data){
-    maker(data.color,'none',data.name,new Date(),data.msg,true);
+    maker(data.color,'none',data.name,new Date(),data.msg,true,data.num);
     scroll(false);
   });
       
@@ -136,25 +136,23 @@ $(function () {
     };
   };
   function maker(color,line,name,date,message,pm) {
-    var cont = $('<div>'),
-        row1 = $('<div>').attr('class','row1'),
-        col1 = $('<div>').attr('class','column1 name').css({'color': color,'text-decoration-line': line}).text(name),
-        col2 = $('<div>').attr('class','column1 date').text(time(date)),
-        col3 = $('<div>').attr('class','column1 blank1'),
-        col4 = $('<div>').attr('class','column1 other'),
-        span = $('<span>').attr('class','myBtn').html('&middot; &middot; &middot;').click(profile),
-        row2 = $('<div>').attr('class','row2'),
-        col5 = $('<div>').attr('class','column2 blank2'),
-        col6 = $('<div>').attr('class','column3').text(message);
-    if (pm) {
-      var span2 = $('<span>').text(' - PM').css('color','#333');
-      col6.css('background','lightsteelblue');
-      col1.append(span2);
-    }
-    col4.append(span);
-    row1.append(col1).append(col2).append(col3).append(col4);
-    row2.append(col5).append(col6);
-    cont.append(row1).append(row2)
+    var cont = $('<div>').attr('class','message'),
+        row = $('<div>').attr('class','row'),
+        col1 = $('<div>').attr('class','col1'),
+        col2 = $('<div>').attr('class','col2'),
+        img = $('<img>').attr('class','img').attr('src',`./face${num}.svg`),
+        out = $('<span>').click(private),
+        strn = $('<strong>').css('color', color).text(name),
+        span = $('<span>').attr('class','date').text(` - ${time(date)}`),
+        btn = $('<button>').attr('class','float-right').html('&#8942;').click(profile),
+        para = $('<p>').text(message);
+    if (pm) { cont.addClass('pm'); }
+    if (self) { cont.addClass('self'); }
+    col1.append(img);
+    out.append(strn);
+    col2.append(out).append(span).append(btn).append(para);
+    row.append(col1).append(col2);
+    cont.append(row);
     $('#messages').append(cont);
     height();
   };
@@ -234,7 +232,7 @@ $(function () {
   
   /* scrolling */
   function scroll(val) {
-    var mess = $('#messages'); // single message display is ~77px tall;
+    var mess = $('#messages');
     var box = mess.height(); // height of container
     var total = mess.prop('scrollHeight'); // height of total content
     var hidden = total - box; // height of hidden content
@@ -243,7 +241,7 @@ $(function () {
       $('#below').fadeOut(500);
     } else {
       var locat = mess.scrollTop();
-      hidden - locat > 77 ? messageBelow(): mess.animate({ scrollTop: hidden }, 500);
+      hidden - locat > 200 ? messageBelow(): mess.animate({ scrollTop: hidden }, 500);
     };
   };
   

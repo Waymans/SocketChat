@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
   res.render('index')
 });
 
-app.use(express.static(process.cwd() + '/public'));
+app.use(express.static('public'));
+app.use(express.static('svg'));
 
 // totalUsers & totalList not currently in use
 var totalUsers = 0;
@@ -55,7 +56,7 @@ io.on('connection', function(socket){
   });
   
   socket.on('chat message', function(msg, color){
-    socket.broadcast.emit('chat message', { msg: msg, name: userName, color: color});
+    socket.broadcast.emit('chat message', { msg: msg, name: userName, color: color, num: num});
   });  
   
   socket.on('typing', function(color){
@@ -68,7 +69,7 @@ io.on('connection', function(socket){
   
   socket.on('private', function(msg, name){
     var id = currentList[currentList.findIndex(i => i.name === name)].id;
-    io.to(id).emit('private', { name: userName, color: userColor, msg: msg });
+    io.to(id).emit('private', { name: userName, color: userColor, msg: msg, num: num });
   });
 
   socket.on('disconnect', function(socket){
