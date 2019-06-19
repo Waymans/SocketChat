@@ -55,7 +55,7 @@ io.on('connection', function(socket){
     userChange(name, color);
   });
   
-  socket.on('chat message', function(msg, color){
+  socket.on('chat message', function(msg, color, num){
     socket.broadcast.emit('chat message', { msg: msg, name: userName, color: color, num: num});
   });  
   
@@ -67,7 +67,7 @@ io.on('connection', function(socket){
 	socket.broadcast.emit('not typing');
   });
   
-  socket.on('private', function(msg, name){
+  socket.on('private', function(msg, name, num){
     var id = currentList[currentList.findIndex(i => i.name === name)].id;
     io.to(id).emit('private', { name: userName, color: userColor, msg: msg, num: num });
   });
