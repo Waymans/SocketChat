@@ -135,7 +135,7 @@ $(function () {
       timeout = setTimeout(timeoutFunction, 2000);
     };
   };
-  function maker(color,line,name,date,message,pm) {
+  function maker(color,line,name,date,message,pm,num) {
     var cont = $('<div>').attr('class','message'),
         row = $('<div>').attr('class','row'),
         col1 = $('<div>').attr('class','col1'),
