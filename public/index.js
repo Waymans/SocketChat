@@ -33,9 +33,9 @@ $(function () {
     e.preventDefault();
     var msg = $('#m').val().trim();
     if (msg === '') {return false;};
-    socket.emit('chat message', msg, cookieColor);
+    socket.emit('chat message', msg, cookieColor, rand);
     $('#m').val('');
-    maker('red','underline','YOU',new Date(),msg,false,rand);
+    maker(cookieColor,true,cookieUser,new Date(),msg,false,rand);
     scroll(false);
     return false;
   });
@@ -43,7 +43,7 @@ $(function () {
     e.preventDefault();
     var msg = $('#pm').val().trim();
     var name = $('#name').html().trim();
-    socket.emit('private message', msg, name);
+    socket.emit('private message', msg, name, rand);
     $('#pm').val('');
     $('#result').text('Message Sent').fadeIn(500).delay(2000).fadeOut(500);
     return false;
@@ -57,7 +57,7 @@ $(function () {
       cookieColor = getCookie('color');
       cookieUser = getCookie('username');
       $('#n').val('');
-      $('#cookie').hide();
+      $('#cookie').hide()
       $('#nickname').fadeOut(0);
       $('#contain').fadeIn(1000);
       $('#m').focus();
@@ -92,12 +92,12 @@ $(function () {
   });    
      
   socket.on('chat message', function(data){
-    maker(data.color,'none',data.name,new Date(),data.msg,false,data.num);
+    maker(data.color,false,data.name,new Date(),data.msg,false,data.num);
     scroll(false);
   });
   
   socket.on('private message', function(data){
-    maker(data.color,'none',data.name,new Date(),data.msg,true,data.num);
+    maker(data.color,false,data.name,new Date(),data.msg,true,data.num);
     scroll(false);
   });
       
@@ -141,7 +141,7 @@ $(function () {
         col1 = $('<div>').attr('class','col1'),
         col2 = $('<div>').attr('class','col2'),
         img = $('<img>').attr('class','img').attr('src',`./face${num}.svg`),
-        out = $('<span>').click(private),
+        out = $('<span>').click(privateM),
         strn = $('<strong>').css('color', color).text(name),
         span = $('<span>').attr('class','date').text(` - ${time(date)}`),
         btn = $('<button>').attr('class','float-right').html('&#8942;').click(profile),
@@ -166,7 +166,7 @@ $(function () {
   /* user cookie info */
   function setCookie(name,val,exp) {
     var d = new Date();
-    d.setTime(d.getTime() + (exp*60*60*1000)); // exp * 1 day(24*60*60*1000), currently in hours
+    d.setTime(d.getTime() + (exp*60*60*1000)); // (24*60*60*1000), currently in hours
     var expires = "expires=" + d.toGMTString();
     document.cookie = name + "=" + val + ";" + expires + ";path=/";
   };
@@ -212,7 +212,7 @@ $(function () {
   var border = true;
   $('.nav').click(function(){
     border ? $('#displayTop').css('border-bottom','none'): $('#displayTop').css('border-bottom','2px solid gray');
-    $('#displayOnline').toggle(()=>{ 
+    $('#displayOnline').toggle(0, ()=>{ 
       border = !border;
       height();
     });
@@ -225,7 +225,7 @@ $(function () {
       var top = $('#displayTop').outerHeight() + $('#displayOnline').outerHeight();
       var bot = $('#input').outerHeight();
       var total = doc - (top + bot) - 25;
-      $(document).width() < 400 ? border ? total = doc - (top + bot) - 5: total = doc - (top + bot) - 25: null;
+      $(document).width() < 400 ? border ? total = doc - (top + bot) - 4: total = doc - (top + bot) - 24: null;
       $('#messages').css({'min-height': total, 'max-height': total, 'overflow-y': 'scroll', 'border-bottom': '2px solid black'});
     }
   };
@@ -256,5 +256,5 @@ $(function () {
   function detectMobile() {
     if (agent) { return '100%' } 
     else { return 'calc(100% - 17px)' }
-  };
+  }
 });
