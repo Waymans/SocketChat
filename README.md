@@ -22,12 +22,35 @@ Socketeer is built on the front-end with:
 * jQuery
 * Pug
 
-The back-end is built on:
+The back-end is built with:
 * Node
 * Express
 * MongoDB
 * Passport
 * Socket.io
+
+## How to use locally
+Make sure to have node and npm installed on your computer.
+
+Clone the repo.
+
+> <code>git clone https://github.com/Waymans/SocketChat folder-name</code>
+
+Change into the folder directory.
+
+> <code>cd folder-name</code>
+
+Install the dependencies.
+
+> <code>npm install</code>
+
+Once installed, start the server.
+
+> <code>node server</code>
+
+Open browser at:
+
+> <code>localhost:3000</code>
 
 ## Authors
 Waylan Hedine
