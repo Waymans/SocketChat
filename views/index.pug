@@ -24,7 +24,7 @@ form#nickname(action='')
         span#name
         | !
       form#privateMsg(action='')
-        input#pm(type='text', autocomplete='off', max='100')
+        input#pm(type='text', autocomplete='off', maxlength='300', minlength='1')
         button.btn Send
       #result
   #displayTop
@@ -39,7 +39,7 @@ form#nickname(action='')
   #messages
     #below
   form#input(action='')
-    input#m(type='text', autocomplete='off', max='100')
+    input#m(type='text', autocomplete='off', maxlength='300', minlength='1')
     button Send
   #displayBottom
     #displayUserBottom.float-right
