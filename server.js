@@ -12,11 +12,7 @@ app.get('/', (req, res) => {
 app.use(express.static('public'));
 app.use(express.static('svg'));
 
-// totalUsers & totalList not currently in use
-var totalUsers = 0;
-var currentUsers = 0;
 var currentList = [];
-var totalList = [];
 io.on('connection', function(socket){
   var addedUser = false; // if the main page is refreshed before a name is picked, --currentUsers wont trigger
   var userColor;
@@ -27,8 +23,7 @@ io.on('connection', function(socket){
     addedUser = true;
     userColor = color;
     userName = name;
-    socket.broadcast.emit('new user', { name: name, color: color });
-    io.emit('count', { count: currentUsers, total: totalUsers });
+    socket.broadcast.emit('display', { name: name, color: color, boo: 'joined' });
     io.emit('users', { users: currentList });
   }
 
@@ -39,17 +34,13 @@ io.on('connection', function(socket){
   });
   
   socket.on('new user', function(name, color){
-    ++currentUsers;
-    ++totalUsers;
-    totalList.push({ name: name, color: color, id: userId });
     currentList.push({ name: name, color: color, id: userId });
     userChange(name, color);
   });
   
-  socket.on('returning user', function(name, color){
+  socket.on('returning user', function(name, color){ // prevents user from manipulating data with 2+ tabs
     var index = currentList.findIndex(i => i.name === name);
-    if (index === -1) { // prevents user from manipulating data with 2+ tabs
-      ++currentUsers;
+    if (index === -1) {
       currentList.push({ name: name, color: color, id: userId }); 
     }
     userChange(name, color);
@@ -60,23 +51,22 @@ io.on('connection', function(socket){
   });  
   
   socket.on('typing', function(color){
-	socket.broadcast.emit('typing', { name: userName, color: color });
+	  socket.broadcast.emit('typing', { name: userName, color: color });
   });
   
   socket.on('not typing', function(data){
-	socket.broadcast.emit('not typing');
+	  socket.broadcast.emit('not typing');
   });
   
-  socket.on('private', function(msg, name, num){
-    var id = currentList[currentList.findIndex(i => i.name === name)].id;
-    io.to(id).emit('private', { name: userName, color: userColor, msg: msg, num: num });
+  socket.on('private message', function(msg,name,num){
+    var id = currentList[currentList.findIndex(i => i.name === name)].id || null;
+    io.to(id).emit('private message', { name: userName, color: userColor, msg: msg, num: num });
   });
 
   socket.on('disconnect', function(socket){
     if (addedUser) { 
       currentList.splice(currentList.findIndex(i => i.id === userId), 1);
-      --currentUsers;
-      io.emit('disconnect', { name: userName, color: userColor, count: currentUsers, total: totalUsers });
+      io.emit('display', { name: userName, color: userColor, boo: 'left' });
       io.emit('users', { users: currentList })
     }
   });
@@ -85,3 +75,5 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+module.exports = app; // for testing

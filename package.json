@@ -4,12 +4,17 @@
   "description": "my first socket.io app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "tests": "mocha && node server.js"
   },
   "dependencies": {
     "express": "^4.16.4",
     "pug": "^2.0.3",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "mocha": "^6.1.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0"
   },
   "engines": {
     "node": "8.x"
