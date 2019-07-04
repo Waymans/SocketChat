@@ -52,5 +52,9 @@ Open browser at:
 
 > <code>localhost:3000</code>
 
+(Optional) - To run tests:
+
+> <code>npm run tests</code>
+
 ## Authors
 Waylan Hedine
